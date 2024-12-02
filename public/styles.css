@@ -1,0 +1,271 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    /* Ensure it takes up the full viewport height */
+    display: flex;
+    justify-content: center;
+    /* Center the content horizontally */
+    align-items: center;
+    /* Center the content vertically */
+    background-color: #f4f4f4;
+    /* Optional: Background color */
+}
+
+.main-container {
+    display: flex;
+    width: 90%;
+    /* Adjust width of the main container */
+    height: 95%;
+    /* Adjust height of the main container */
+    background-color: #ffffff;
+    /* Optional: Background color for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Optional: Add shadow for a modern look */
+    border-radius: 8px;
+    /* Optional: Rounded corners */
+    overflow: hidden;
+    /* Prevent content from spilling out */
+}
+
+.left-container {
+    flex: 3;
+    /* Larger portion of the layout */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Space between children */
+    padding: 20px;
+    background-color: #f0f8ff;
+    /* Optional: Background color */
+}
+
+.upload-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 5;
+    position: relative;
+    background-color: #d1e7ff;
+    border-radius: 8px;
+    padding: 20px;
+    overflow: hidden;
+}
+
+
+.chat {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 2; /* Slightly smaller than the upload section */
+	background-color: #bfe6ff; /* Soft blue background for consistency */
+	border-radius: 8px; /* Optional: Rounded corners */
+	padding: 20px;
+	font-size: 1rem;
+}
+
+.right-container {
+    flex: 1;
+    /* Smaller portion of the layout */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 20px;
+    background-color: #e3fcec;
+    /* Optional: Background color */
+}
+
+.upload-section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.upload-label {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.upload-input {
+    display: none;
+    /* Hide the default file input */
+}
+
+.upload-label:hover {
+    background-color: #0056b3;
+    /* Slightly darker on hover */
+}
+
+.remove-btn {
+	background-color: #ff4d4d;
+	color: white;
+	border: none;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.remove-btn:hover {
+	background-color: #ff0000;
+}
+
+.preview-section {
+    width: 100%; /* Full width of upload-img */
+    height: 100%; /* Full height of upload-img */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+#preview {
+    width: 100%; /* Take full width of container */
+    height: 100%; /* Take full height of container */
+    max-width: 100%; /* Ensure it doesn't exceed container width */
+    max-height: 100%; /* Ensure it doesn't exceed container height */
+    object-fit: contain; /* Maintain aspect ratio while fitting fully */
+    display: block;
+}
+
+.calculate-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calculate-btn:hover {
+    background-color: #218838;
+}
+
+.ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto; /* Add scrolling if content overflows */
+    max-height: 100%; /* Ensure it can scroll within its container */
+}
+
+/* Ingredients Section Styling */
+.ingredients-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #a0d8b3;
+    padding-bottom: 10px;
+}
+
+.ingredients-header h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.add-ingredient-btn {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-ingredient-btn:hover {
+    background-color: #138496;
+}
+
+.ingredients-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 400px; /* Limit height and allow scrolling */
+}
+
+.ingredient-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+}
+
+.ingredient-details {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ingredient-name {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.ingredient-quantity {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.ingredient-calories {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.ingredient-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+}
+
+.ingredient-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.edit-btn {
+    color: #17a2b8;
+}
+
+.ingredient-actions .remove-btn {
+    color: #dc3545;
+}
+
+.total-calories {
+    margin-top: 15px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #2c3e50;
+    border-top: 2px solid #a0d8b3;
+    padding-top: 10px;
+}
