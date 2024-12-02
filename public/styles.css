@@ -208,6 +208,7 @@ body {
 }
 
 .ingredient-item {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -217,9 +218,10 @@ body {
 }
 
 .ingredient-details {
+    margin-right: 10px;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 90%;
 }
 
 .ingredient-name {
@@ -241,7 +243,15 @@ body {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
-    width: 100%;
+}
+
+.ingredient-actions .remove-btn {
+    background: none;
+    color: #dc3545;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease;
 }
 
 .ingredient-actions button {
@@ -256,8 +266,8 @@ body {
     color: #17a2b8;
 }
 
-.ingredient-actions .remove-btn {
-    color: #dc3545;
+.ingredient-actions .remove-btn:hover {
+    color: #a71d2a;
 }
 
 .total-calories {
