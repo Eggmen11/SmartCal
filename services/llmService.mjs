@@ -1,7 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
+import dotenv from 'dotenv';
+dotenv.config(); // Load environment variables
+
 
 const client = new Anthropic({
-	apiKey: "my_api_key", // defaults to process.env["ANTHROPIC_API_KEY"]
+	apiKey: "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", // defaults to process.env["ANTHROPIC_API_KEY"]
 });
 
 const systemPrompt = `
@@ -9,7 +12,7 @@ const systemPrompt = `
         Be accurate and try to detect as many objects as possible. Really open your eyes and see the world.
 
         Follow these strict rules:
-        1. Output MUST be valid JSON with no additional text
+        1. Output MUST be valid JSON with no eadditional text
         2. Each detected object must have:
             - 'element': descriptive name of the object
             - 'bbox': [x1, y1, x2, y2] coordinates (normalized 0-1)
@@ -31,6 +34,9 @@ const systemPrompt = `
 `;
 
 export async function getBorderedImg(imageData) {
+    console.log("Loaded API Key:", process.env.ANTHROPIC_API_KEY);
+
+
 	const base64Image = imageData.image;
 	const type = imageData.type;
 	const content = [];
@@ -56,6 +62,7 @@ export async function getBorderedImg(imageData) {
 				},
 			],
 		});
+        return response;
 	} catch (error) {
 		console.log(error);
 	}
