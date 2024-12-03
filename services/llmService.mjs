@@ -1,7 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
+import { processImg } from "./imgService.mjs";
 
 const client = new Anthropic({
 	apiKey: "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", // defaults to process.env["ANTHROPIC_API_KEY"]
@@ -28,7 +29,7 @@ const systemPrompt = `
             ]
         }
         4. Coordinates must be precise and properly normalized
-        5. DO NOT include any explanation or additional text
+        5. DO NOT UNDER ANY CIRCUMSTANCES include any explanation, description or additional text outside of the JSON
         """
 
 `;
@@ -40,6 +41,9 @@ export async function getBorderedImg(imageData) {
 
 	//console.log(base64Image);
 	// console.log(type);
+    const processedImg = await processImg(base64Image, undefined);
+
+	return
 
 	content.push({
 		type: "image",
@@ -50,7 +54,9 @@ export async function getBorderedImg(imageData) {
 		},
 	});
 
+
 	try {
+		console.log("Generating LLm response...")
 		const response = await client.messages.create({
 			model: "claude-3-5-sonnet-20241022",
 			max_tokens: 8000,
@@ -62,9 +68,18 @@ export async function getBorderedImg(imageData) {
 				},
 			],
 		});
-		console.log(response.content);
-        return response;
+		console.log(response.content[0].text);
+		const parsedObj = JSON.parse(response.content[0].text);
+		console.log(parsedObj["1"][0]["bbox"]);
+
+		console.log("Processing image...")
+		const processedImg = await processImg(base64Image, parsedObj["1"]);
+		console.log(processedImg);
+
+		return response;
 	} catch (error) {
 		console.log(error);
 	}
 }
+
+function llmParser(data) {}
