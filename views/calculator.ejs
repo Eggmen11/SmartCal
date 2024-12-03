@@ -67,7 +67,7 @@
 	const removeButton = document.getElementById("remove-btn");
     const calculateButton = document.querySelector(".calculate-btn");
     const validFileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "imgage/webp"];
-    let base64Image = undefined;
+	const imgData = undefined;
     let imgFileType = undefined;
 
 	// Reset the file input to allow re-uploading after removal
@@ -89,7 +89,7 @@
 
 			const reader = new FileReader();
 			reader.onload = (e) => {
-                base64Image = e.target.result;
+				data = e.target.result;
 				previewImage.src = e.target.result;
 				uploadSection.style.display = "none";
 				previewSection.style.display = "flex";
@@ -106,18 +106,23 @@
 	});
 
     calculateButton.addEventListener("click", () => {
-        if (!base64Image) {-
+
+        if (!data) {-
             alert("Please upload an image first.");
             return;
         }
         
+		// Splits the reslut of reading the data which return the type and base64 in one string seperated by ,
+		const dataList = data.split(",");
+		const base64 = dataList[1];
+
         fetch("/upload", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                image: base64Image,
+                image: base64,
                 type: imgFileType
             })
         })

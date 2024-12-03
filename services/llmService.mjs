@@ -4,7 +4,7 @@ dotenv.config(); // Load environment variables
 
 
 const client = new Anthropic({
-	apiKey: "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", // defaults to process.env["ANTHROPIC_API_KEY"]
+	apiKey: "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", // defaults to process.env["ANTHROPIC_API_KEY"]
 });
 
 const systemPrompt = `
@@ -34,12 +34,12 @@ const systemPrompt = `
 `;
 
 export async function getBorderedImg(imageData) {
-    console.log("Loaded API Key:", process.env.ANTHROPIC_API_KEY);
-
-
 	const base64Image = imageData.image;
 	const type = imageData.type;
 	const content = [];
+
+	//console.log(base64Image);
+	// console.log(type);
 
 	content.push({
 		type: "image",
@@ -62,6 +62,7 @@ export async function getBorderedImg(imageData) {
 				},
 			],
 		});
+		console.log(response.content);
         return response;
 	} catch (error) {
 		console.log(error);

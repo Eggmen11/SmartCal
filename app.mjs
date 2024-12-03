@@ -18,6 +18,6 @@ app.get("/", (req, res) => res.render("home"));
 app.get("/calc", (req, res) => res.render("calculator"));
 
 app.post("/upload", (req, res) => {
-    console.log(req.body);
+    //console.log(req.body);
     getBorderedImg(req.body).then((data) => res.json(data));
 });
