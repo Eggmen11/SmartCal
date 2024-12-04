@@ -66,8 +66,8 @@
 	const previewSection = document.getElementById("preview-section");
 	const removeButton = document.getElementById("remove-btn");
     const calculateButton = document.querySelector(".calculate-btn");
-    const validFileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "imgage/webp"];
-	const imgData = undefined;
+    const validFileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "image/webp"];
+	let imgData = undefined;
     let imgFileType = undefined;
 
 	// Reset the file input to allow re-uploading after removal
@@ -89,7 +89,7 @@
 
 			const reader = new FileReader();
 			reader.onload = (e) => {
-				data = e.target.result;
+				imgData = e.target.result;
 				previewImage.src = e.target.result;
 				uploadSection.style.display = "none";
 				previewSection.style.display = "flex";
@@ -105,18 +105,18 @@
 		resetFileInput(); // Reset the file input
 	});
 
-    calculateButton.addEventListener("click", () => {
+    calculateButton.addEventListener("click", async () => {
 
-        if (!data) {-
+        if (!imgData) {
             alert("Please upload an image first.");
             return;
         }
         
 		// Splits the reslut of reading the data which return the type and base64 in one string seperated by ,
-		const dataList = data.split(",");
+		const dataList = imgData.split(",");
 		const base64 = dataList[1];
 
-        fetch("/upload", {
+        const response = await fetch("/upload", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -126,6 +126,14 @@
                 type: imgFileType
             })
         })
+
+		if (!response.ok) {
+			throw new Error(responseData.message);
+		}
+		const responseData = await response.json(response);
+		fileInput.value = responseData.image;
+
+		console.log(responseData);
     })
 
 </script>

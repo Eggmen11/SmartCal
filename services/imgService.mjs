@@ -62,9 +62,7 @@ export async function drawBorders(base64Image, detectedObjs, mock=false) {
 		const rectH = y2 - y1;
 
 		// Log dimensions for debugging
-		console.log(
-			`Rectangle Dimensions: x1=${x1}, x2=${x2}, y1=${y1}, y2=${y2}, width=${rectW}, height=${rectH}`
-		);
+		// console.log(`Rectangle Dimensions: x1=${x1}, x2=${x2}, y1=${y1}, y2=${y2}, width=${rectW}, height=${rectH}`);
 
 		// Skip invalid rectangles
 		if (rectW <= 0 || rectH <= 0) {
@@ -101,5 +99,7 @@ export async function drawBorders(base64Image, detectedObjs, mock=false) {
 	await sharp(processedImage).toFile("output.png");
 
 	// Return the base64 encoded image
+
+	console.log('Boarders Drawn')
 	return processedImage.toString("base64");
 }
