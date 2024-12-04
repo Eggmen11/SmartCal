@@ -65,10 +65,16 @@
 	const uploadSection = document.getElementById("upload-section");
 	const previewSection = document.getElementById("preview-section");
 	const removeButton = document.getElementById("remove-btn");
-    const calculateButton = document.querySelector(".calculate-btn");
-    const validFileTypes = ["image/jpeg", "image/png", "image/jpg", "image/gif", "image/webp"];
+	const calculateButton = document.querySelector(".calculate-btn");
+	const validFileTypes = [
+		"image/jpeg",
+		"image/png",
+		"image/jpg",
+		"image/gif",
+		"image/webp",
+	];
 	let imgData = undefined;
-    let imgFileType = undefined;
+	let imgFileType = undefined;
 
 	// Reset the file input to allow re-uploading after removal
 	function resetFileInput() {
@@ -78,15 +84,16 @@
 	fileInput.addEventListener("change", (event) => {
 		const file = event.target.files[0];
 		if (file) {
-            console.log("File type " + file.type);
-            imgFileType = file.type;
+			console.log("File type " + file.type);
+			imgFileType = file.type;
 
-            if (!validFileTypes.includes(imgFileType)) {
-                alert("Please upload a valid image file.");
-                resetFileInput();
-                return;
-            }
+			if (!validFileTypes.includes(imgFileType)) {
+				alert("Please upload a valid image file.");
+				resetFileInput();
+				return;
+			}
 
+			console.log("Reading Image ...");
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				imgData = e.target.result;
@@ -105,35 +112,38 @@
 		resetFileInput(); // Reset the file input
 	});
 
-    calculateButton.addEventListener("click", async () => {
+	calculateButton.addEventListener("click", async () => {
+		if (!imgData) {
+			alert("Please upload an image first.");
+			return;
+		}
 
-        if (!imgData) {
-            alert("Please upload an image first.");
-            return;
-        }
-        
 		// Splits the reslut of reading the data which return the type and base64 in one string seperated by ,
 		const dataList = imgData.split(",");
 		const base64 = dataList[1];
 
-        const response = await fetch("/upload", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                image: base64,
-                type: imgFileType
-            })
-        })
+		console.log("Sending image data to server...");
+		const response = await fetch("/upload", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({
+				image: base64,
+				type: imgFileType,
+			}),
+		});
 
 		if (!response.ok) {
 			throw new Error(responseData.message);
 		}
+		console.log("Image proccessed successfully");
 		const responseData = await response.json(response);
-		fileInput.value = responseData.image;
-
 		console.log(responseData);
-    })
 
+		const processedBase64 = responseData.image; // Use the processed image from the server
+		const processedType = responseData.type || imgFileType; // Default to original type if not provided
+		const processedDataUrl = `data:${processedType};base64,${processedBase64}`;
+		previewImage.src = processedDataUrl; // Update the preview with the processed image
+	});
 </script>

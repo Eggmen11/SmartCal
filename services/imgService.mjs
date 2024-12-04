@@ -29,9 +29,6 @@ const mockData = [
 ];
 
 export async function drawBorders(base64Image, detectedObjs, mock=false) {
-	console.log("Base64 - drawFunc: " + base64Image)
-
-
     detectedObjs = mock ? mockData : detectedObjs;
 	const buffer = Buffer.from(base64Image, "base64");
 	const image = sharp(buffer);
@@ -41,15 +38,10 @@ export async function drawBorders(base64Image, detectedObjs, mock=false) {
 	const width = metadata.width;
 	const height = metadata.height;
 
-	console.log("Detected Objects: ");
-	console.log(detectedObjs);
-
 	// Generate an overlay with rectangles
 	let svgRects = `<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">`;
 
 	for (const objs of detectedObjs) {
-		console.log("Coords: " + objs.bbox);
-
 		// Scale normalized bbox values to image dimensions
 		const [x1, y1, x2, y2] = [
 			objs.bbox[0] * width, // x1
@@ -80,9 +72,6 @@ export async function drawBorders(base64Image, detectedObjs, mock=false) {
 	}
 
 	svgRects += `</svg>`;
-
-	// Debug log SVG
-	console.log(`SVG Content: ${svgRects}`);
 
 	// Composite the rectangles onto the original image
 	const processedImage = await image
