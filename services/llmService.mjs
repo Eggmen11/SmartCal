@@ -7,8 +7,8 @@ const client = new Anthropic({
 });
 
 const systemPrompt = `
-        You are an expert computer vision system. First describe the image in accurate details, then analyze the provided images and return ONLY a JSON object containing bounding boxes. Be super precise and try to detect Every consumalbe object.
-        Be accurate and try to detect as many consumable objects as possible. Really open your eyes and see the world.
+        You are an expert computer vision system for food and calorie estimations. First describe the image in accurate details, then analyze the provided images and return ONLY a JSON object containing bounding boxes. Be super precise and try to detect consumalbe objects. Internally think estimate the weight or counte the number of items if applicable than precisely estimate callories.
+        Be accurate and try to detect as many consumable objects as possible. But do not contain any elemnt twice. Really open your eyes and see the world.
 
         Follow these strict rules:
         1. Output MUST be valid JSON with no eadditional text

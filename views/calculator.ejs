@@ -32,30 +32,8 @@
 				<button class="add-ingredient-btn">+ Add Ingredient</button>
 			</div>
 			<div class="ingredients-list">
-				<div class="ingredient-item">
-					<div class="ingredient-details">
-						<span class="ingredient-name">Chicken Breast</span>
-						<span class="ingredient-quantity">200g</span>
-					</div>
-					<div class="ingredient-calories">180 Calories</div>
-					<div class="ingredient-actions">
-						<button class="edit-btn">✏️</button>
-						<button class="remove-btn">X</button>
-					</div>
-				</div>
-				<div class="ingredient-item">
-					<div class="ingredient-details">
-						<span class="ingredient-name">Rice</span>
-						<span class="ingredient-quantity">150g</span>
-					</div>
-					<div class="ingredient-calories">220 Calories</div>
-					<div class="ingredient-actions">
-						<button class="edit-btn">✏️</button>
-						<button class="remove-btn">X</button>
-					</div>
-				</div>
 			</div>
-			<div class="total-calories">Total Calories: 400</div>
+			<div class="total-calories"></div>
 		</div>
 	</div>
 </div>
@@ -145,5 +123,27 @@
 		const processedType = responseData.type || imgFileType; // Default to original type if not provided
 		const processedDataUrl = `data:${processedType};base64,${processedBase64}`;
 		previewImage.src = processedDataUrl; // Update the preview with the processed image
+
+		let totalCals = 0;
+		for (const foodObj of responseData.foodData) {
+			const item = document.createElement("div");
+			const displayTotalCals = document.querySelector(".total-calories");
+
+			totalCals += foodObj.estimated_cals;
+			item.classList.add("ingredient-item");
+			item.innerHTML = `
+				<div class="ingredient-details">
+					<span class="ingredient-name">${foodObj.element}</span>
+				</div>
+				<div class="ingredient-calories">${foodObj.estimated_cals} Calories</div>
+				<div class="ingredient-actions">
+					<button class="edit-btn">✏️</button>
+					<button class="remove-btn">X</button>
+				</div>
+			`;
+			document.querySelector(".ingredients-list").appendChild(item);
+
+			displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
+		}
 	});
 </script>
