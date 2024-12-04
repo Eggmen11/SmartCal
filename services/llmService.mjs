@@ -35,8 +35,8 @@ const systemPrompt = `
 `;
 
 export async function detectFood(imageData) {
-	const base64Image = imageData.image;
 	const type = imageData.type;
+	const base64Image = imageData.image;
 	const content = [];
 
 	//console.log(base64Image);
@@ -64,11 +64,10 @@ export async function detectFood(imageData) {
 				},
 			],
 		});
-		console.log(response.content[0].text);
-		const parsedObj = JSON.parse(response.content[0].text);
+		//console.log(response.content[0].text);
+		//const parsedObj = JSON.parse(response.content[0].text);
 		//console.log(parsedObj["1"][0]["bbox"]);
 
-		console.log("Processing image...");
 		//const processedImg = await processImg(base64Image, parsedObj["1"]);
 		//console.log(processedImg);
 
