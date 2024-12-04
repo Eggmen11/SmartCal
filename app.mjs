@@ -1,7 +1,7 @@
 import express from "express";
 import ejs from "ejs";
-import path from "path"
-import { getBorderedImg } from "./services/llmService.mjs"
+import path from "path";
+import { detectFood } from "./services/llmService.mjs";
 
 const app = express();
 
@@ -20,5 +20,5 @@ app.get("/calc", (req, res) => res.render("calculator"));
 
 app.post("/upload", (req, res) => {
 	//console.log(req.body);
-	getBorderedImg(req.body).then((data) => res.json(data));
+	detectFood(req.body).then((data) => res.json(data));
 });

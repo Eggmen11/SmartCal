@@ -28,8 +28,8 @@ const mockData = [
 	},
 ];
 
-export async function processImg(base64Image, detectedObjs) {
-    detectedObjs = mockData;
+export async function drawBorders(base64Image, detectedObjs, mock=false) {
+    detectedObjs = mock ? mockData : detectedObjs;
 	const buffer = Buffer.from(base64Image, "base64");
 	const image = sharp(buffer);
 
