@@ -9,6 +9,7 @@ const client = new Anthropic({
 const systemPrompt = `
         You are an expert computer vision system for food and calorie estimations. First describe the image in accurate details, then analyze the provided images and return ONLY a JSON object containing bounding boxes. Be super precise and try to detect consumalbe objects. Internally think estimate the weight or counte the number of items if applicable than precisely estimate callories.
         Be accurate and try to detect as many consumable objects as possible. But do not contain any elemnt twice. Really open your eyes and see the world.
+		User may have provided additional context if you see previous food data that means is recalculating the cals so take that into account.
 
         Follow these strict rules:
         1. Output MUST be valid JSON with no eadditional text
@@ -34,10 +35,25 @@ const systemPrompt = `
 
 `;
 
-export async function detectFood(imageData, mock=false) {
-	const type = imageData.type;
-	const base64Image = imageData.image;
+export async function detectFood(requestData, mock = false) {
+	const type = requestData.type;
+	const base64Image = requestData.image;
 	const content = [];
+	const additionalContext = [];
+
+	if (requestData.prevFoodData) {
+		content.push({
+			type: "text",
+			text: JSON.stringify(requestData.prevFoodData),
+		});
+	}
+
+	if (requestData.userContext) {
+		content.push({
+			type: "text",
+			text: requestData.userContext,
+		});
+	}
 
 	//console.log(base64Image);
 	// console.log(type);
@@ -70,7 +86,7 @@ export async function detectFood(imageData, mock=false) {
 
 		//const processedImg = await processImg(base64Image, parsedObj["1"]);
 		//console.log(processedImg);
-		
+
 		return response;
 	} catch (error) {
 		console.log(error);

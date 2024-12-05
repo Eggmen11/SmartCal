@@ -5,6 +5,10 @@ const lastElements = [];
 
 export async function processImg(requestData) {
     // Image data should contain base64 img string and the image type
+    console.log("Request Data:")
+    console.log(requestData);
+
+
 	const base64Image = requestData.image;
 	const type = requestData.type;
     const userContext = requestData.userContext;

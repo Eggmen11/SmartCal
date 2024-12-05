@@ -56,12 +56,27 @@
 		"image/gif",
 		"image/webp",
 	];
+	let prevFoodOjbs = undefined;
 	let imgData = undefined;
 	let originalImage = undefined;
 	let imgFileType = undefined;
 
 	let isImageProcessed = false;
 
+
+	function reset() {
+		prevFoodOjbs = undefined;
+		imgData = undefined;
+		originalImage = undefined;
+		imgFileType = undefined;
+		isImageProcessed = false;
+		calculateButton.innerHTML = "Calculate";
+		displayTotalCals.textContent = "";
+		ingredientList.innerHTML = "";
+		previewImage.src = "";
+		previewSection.style.display = "none";
+		uploadSection.style.display = "flex";
+	}
 	// Reset the file input to allow re-uploading after removal
 	function resetFileInput() {
 		fileInput.value = ""; // Clear the file input value
@@ -95,13 +110,7 @@
 	});
 
 	removeButton.addEventListener("click", () => {
-		isImageProcessed = false;
-		calculateButton.innerHTML = "Calculate";
-		displayTotalCals.textContent = "";
-		ingredientList.innerHTML = "";
-		previewImage.src = "";
-		previewSection.style.display = "none";
-		uploadSection.style.display = "flex";
+		reset();
 		resetFileInput(); // Reset the file input
 	});
 
@@ -115,6 +124,7 @@
 		const dataList = originalImage.split(",");
 		const base64 = dataList[1];
 		const userContext = chatArea.value;
+		chatArea.value = "";
 
 		console.log("User context: " + userContext);
 		console.log("Sending image data to server...");
@@ -126,13 +136,15 @@
 			body: JSON.stringify({
 				image: base64,
 				type: imgFileType,
-				userContext: userContext
+				userContext: userContext,
+				prevFoodData: prevFoodOjbs,
 			}),
 		});
 
 		if (!response.ok) {
 			throw new Error(responseData.message);
 		}
+		ingredientList.innerHTML = "";
 
 		console.log("Image proccessed successfully");
 		isImageProcessed = true;
@@ -144,6 +156,7 @@
 		const processedDataUrl = `data:${processedType};base64,${processedBase64}`;
 		previewImage.src = processedDataUrl; // Update the preview with the processed image
 
+		prevFoodOjbs = responseData.foodData;
 		let totalCals = 0;
 		for (const foodObj of responseData.foodData) {
 			const item = document.createElement("div");
