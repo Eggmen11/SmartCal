@@ -1,0 +1,11 @@
+Make the frontend buttons work 
+    - Add ingredient button
+    - Remove ingredient button
+    - Edit ingredient button
+
+When user presses remove button while it is processing the image do not display the detected ingredients let it fall through.
+
+Make it more deterministic and accurate by prompting it better.
+Make the borders more accurate.
+
+Test it with labeled data.
