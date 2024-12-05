@@ -23,13 +23,15 @@
 			</div>
 			<button class="calculate-btn">Calculate</button>
 		</div>
-		<div class="chat">Chat</div>
+		<div class="chat">
+			<textarea id="chat-area" class="chat-area" placeholder="Enter additional information (Optional)"></textarea>
+		</div>
 	</div>
 	<div class="right-container">
 		<div class="ingredients">
 			<div class="ingredients-header">
 				<h3>Ingredients</h3>
-				<button class="add-ingredient-btn">+ Add Ingredient</button>
+				<button class="add-ingredient-btn">+ Add</button>
 			</div>
 			<div class="ingredients-list">
 			</div>
@@ -44,6 +46,9 @@
 	const previewSection = document.getElementById("preview-section");
 	const removeButton = document.getElementById("remove-btn");
 	const calculateButton = document.querySelector(".calculate-btn");
+	const chatArea = document.getElementById("chat-area");
+	const ingredientList = document.querySelector(".ingredients-list");
+	const displayTotalCals = document.querySelector(".total-calories");
 	const validFileTypes = [
 		"image/jpeg",
 		"image/png",
@@ -52,7 +57,10 @@
 		"image/webp",
 	];
 	let imgData = undefined;
+	let originalImage = undefined;
 	let imgFileType = undefined;
+
+	let isImageProcessed = false;
 
 	// Reset the file input to allow re-uploading after removal
 	function resetFileInput() {
@@ -74,6 +82,9 @@
 			console.log("Reading Image ...");
 			const reader = new FileReader();
 			reader.onload = (e) => {
+				if (!isImageProcessed) {
+					originalImage = e.target.result;
+				}
 				imgData = e.target.result;
 				previewImage.src = e.target.result;
 				uploadSection.style.display = "none";
@@ -84,6 +95,10 @@
 	});
 
 	removeButton.addEventListener("click", () => {
+		isImageProcessed = false;
+		calculateButton.innerHTML = "Calculate";
+		displayTotalCals.textContent = "";
+		ingredientList.innerHTML = "";
 		previewImage.src = "";
 		previewSection.style.display = "none";
 		uploadSection.style.display = "flex";
@@ -97,9 +112,11 @@
 		}
 
 		// Splits the reslut of reading the data which return the type and base64 in one string seperated by ,
-		const dataList = imgData.split(",");
+		const dataList = originalImage.split(",");
 		const base64 = dataList[1];
+		const userContext = chatArea.value;
 
+		console.log("User context: " + userContext);
 		console.log("Sending image data to server...");
 		const response = await fetch("/upload", {
 			method: "POST",
@@ -109,13 +126,16 @@
 			body: JSON.stringify({
 				image: base64,
 				type: imgFileType,
+				userContext: userContext
 			}),
 		});
 
 		if (!response.ok) {
 			throw new Error(responseData.message);
 		}
+
 		console.log("Image proccessed successfully");
+		isImageProcessed = true;
 		const responseData = await response.json(response);
 		console.log(responseData);
 
@@ -127,7 +147,6 @@
 		let totalCals = 0;
 		for (const foodObj of responseData.foodData) {
 			const item = document.createElement("div");
-			const displayTotalCals = document.querySelector(".total-calories");
 
 			totalCals += foodObj.estimated_cals;
 			item.classList.add("ingredient-item");
@@ -145,5 +164,7 @@
 
 			displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
 		}
+
+		calculateButton.textContent = "Recalculate";
 	});
 </script>

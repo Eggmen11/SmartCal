@@ -34,7 +34,7 @@ const systemPrompt = `
 
 `;
 
-export async function detectFood(imageData) {
+export async function detectFood(imageData, mock=false) {
 	const type = imageData.type;
 	const base64Image = imageData.image;
 	const content = [];
@@ -70,7 +70,7 @@ export async function detectFood(imageData) {
 
 		//const processedImg = await processImg(base64Image, parsedObj["1"]);
 		//console.log(processedImg);
-
+		
 		return response;
 	} catch (error) {
 		console.log(error);

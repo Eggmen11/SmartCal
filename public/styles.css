@@ -3,42 +3,30 @@ body {
     padding: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
-    /* Ensure it takes up the full viewport height */
     display: flex;
     justify-content: center;
-    /* Center the content horizontally */
     align-items: center;
-    /* Center the content vertically */
-    background-color: #f4f4f4;
-    /* Optional: Background color */
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 .main-container {
     display: flex;
     width: 90%;
-    /* Adjust width of the main container */
     height: 95%;
-    /* Adjust height of the main container */
-    background-color: #ffffff;
-    /* Optional: Background color for the container */
+    background-color: #2a2a2a;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Optional: Add shadow for a modern look */
     border-radius: 8px;
-    /* Optional: Rounded corners */
     overflow: hidden;
-    /* Prevent content from spilling out */
 }
 
 .left-container {
     flex: 3;
-    /* Larger portion of the layout */
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* Space between children */
     padding: 20px;
-    background-color: #f0f8ff;
-    /* Optional: Background color */
+    background-color: #323232;
 }
 
 .upload-img {
@@ -48,86 +36,110 @@ body {
     flex-direction: column;
     flex: 5;
     position: relative;
-    background-color: #d1e7ff;
+    background-color: #3a3a3a;
     border-radius: 8px;
     padding: 20px;
     overflow: hidden;
 }
 
+.chat-area {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    color: #ffffff; /* White text */
+    background-color: #2a2a2a; /* Dark gray background for modern feel */
+    resize: none; /* Disable resizing for consistent layout */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+    outline: none; /* Remove the default outline on focus */
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+}
+
+.chat-area:focus {
+    background-color: #3a3a3a; /* Slightly lighter gray on focus */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* More pronounced shadow on focus */
+}
+
 
 .chat {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex: 2; /* Slightly smaller than the upload section */
-	background-color: #bfe6ff; /* Soft blue background for consistency */
-	border-radius: 8px; /* Optional: Rounded corners */
-	padding: 20px;
-	font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 2;
+    background-color: #404040;
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 5px;
+    font-size: 1rem;
 }
 
 .right-container {
     flex: 1;
-    /* Smaller portion of the layout */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     padding: 20px;
-    background-color: #e3fcec;
-    /* Optional: Background color */
+    background-color: #2b2b2b;
 }
 
 .upload-section {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .upload-label {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+    background: linear-gradient(135deg, #007bff, #6a0dad);
+    color: #ffffff;
     border-radius: 8px;
     cursor: pointer;
     font-size: 1rem;
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .upload-input {
     display: none;
-    /* Hide the default file input */
 }
 
 .upload-label:hover {
-    background-color: #0056b3;
-    /* Slightly darker on hover */
+    background: linear-gradient(135deg, #0056b3, #4e0879);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .remove-btn {
-	background-color: #ff4d4d;
-	color: white;
-	border: none;
-	border-radius: 50%;
-	width: 30px;
-	height: 30px;
-	font-size: 18px;
-	font-weight: bold;
-	cursor: pointer;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    background: linear-gradient(135deg, #ff4d4d, #b22222);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .remove-btn:hover {
-	background-color: #ff0000;
+    background: linear-gradient(135deg, #e60000, #8b0000);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .preview-section {
-    width: 100%; /* Full width of upload-img */
-    height: 100%; /* Full height of upload-img */
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -135,11 +147,11 @@ body {
 }
 
 #preview {
-    width: 100%; /* Take full width of container */
-    height: 100%; /* Take full height of container */
-    max-width: 100%; /* Ensure it doesn't exceed container width */
-    max-height: 100%; /* Ensure it doesn't exceed container height */
-    object-fit: contain; /* Maintain aspect ratio while fitting fully */
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
     display: block;
 }
 
@@ -147,56 +159,59 @@ body {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background-color: #28a745;
+    background: linear-gradient(135deg, #4caf50, #2e8b57);
     color: white;
     border: none;
     border-radius: 6px;
     padding: 8px 16px;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .calculate-btn:hover {
-    background-color: #218838;
+    background: linear-gradient(135deg, #3c9141, #276947);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .ingredients {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    overflow-y: auto; /* Add scrolling if content overflows */
-    max-height: 100%; /* Ensure it can scroll within its container */
+    overflow-y: auto;
+    max-height: 100%;
 }
 
-/* Ingredients Section Styling */
 .ingredients-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    border-bottom: 2px solid #a0d8b3;
+    border-bottom: 2px solid #6a5acd; /* Lavender blue for the header underline */
     padding-bottom: 10px;
 }
 
 .ingredients-header h3 {
     margin: 0;
-    color: #2c3e50;
+    color: #9a79f7; /* Soft lavender blue for the title */
 }
 
 .add-ingredient-btn {
-    background-color: #17a2b8;
+    background: linear-gradient(135deg, #6a5acd, #483d8b);
     color: white;
     border: none;
     border-radius: 4px;
     padding: 6px 12px;
     font-size: 0.8rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .add-ingredient-btn:hover {
-    background-color: #138496;
+    background: linear-gradient(135deg, #5a4dbc, #3e3175);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
 .ingredients-list {
@@ -204,7 +219,7 @@ body {
     flex-direction: column;
     gap: 10px;
     overflow-y: auto;
-    max-height: 400px; /* Limit height and allow scrolling */
+    max-height: 400px;
 }
 
 .ingredient-item {
@@ -212,7 +227,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background-color: #e9ecef;
+    background-color: #3c3c3c;
     border-radius: 6px;
     padding: 15px;
 }
@@ -226,17 +241,17 @@ body {
 
 .ingredient-name {
     font-weight: bold;
-    color: #2c3e50;
+    color: #9a79f7;
 }
 
 .ingredient-quantity {
-    color: #6c757d;
+    color: #c5c5c5;
     font-size: 0.9rem;
 }
 
 .ingredient-calories {
     font-weight: bold;
-    color: #28a745;
+    color: #7148c1;
 }
 
 .ingredient-actions {
@@ -247,27 +262,25 @@ body {
 
 .ingredient-actions .remove-btn {
     background: none;
-    color: #dc3545;
+    color: #f54242;
     border: none;
     cursor: pointer;
     font-size: 1rem;
     transition: color 0.3s ease;
-}
-
-.ingredient-actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-}
-
-.edit-btn {
-    color: #17a2b8;
 }
 
 .ingredient-actions .remove-btn:hover {
-    color: #a71d2a;
+    color: #c30000;
+}
+
+.edit-btn {
+    color: #9a79f7;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.edit-btn:hover {
+    color: #7148c1;
+    transform: scale(1.05);
 }
 
 .total-calories {
@@ -275,7 +288,7 @@ body {
     text-align: right;
     font-weight: bold;
     font-size: 1.1rem;
-    color: #2c3e50;
-    border-top: 2px solid #a0d8b3;
-    padding-top: 10px;
+    color: #d4f1d4;
+    color: #9a79f7; /* Lavender blue for total calories text */
+    border-top: 2px solid #6a5acd; /* Lavender blue for the border */
 }
