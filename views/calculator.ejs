@@ -18,6 +18,9 @@
 				id="preview-section"
 				style="display: none"
 			>
+				<div class="loading-overlay" id="loading-overlay">
+					<div class="spinner"></div>
+				</div>
 				<img id="preview" alt="Preview" />
 				<button id="remove-btn" class="remove-btn">X</button>
 			</div>
@@ -53,6 +56,7 @@
 	const ingredientList = document.querySelector(".ingredients-list");
 	const displayTotalCals = document.querySelector(".total-calories");
 	const addIngredientBtn = document.querySelector(".add-ingredient-btn");
+	const loadingOverlay = document.getElementById("loading-overlay");
 	const validFileTypes = [
 		"image/jpeg",
 		"image/png",
@@ -119,17 +123,17 @@
 		const newItem = document.createElement("div");
 		newItem.classList.add("ingredient-item");
 		newItem.innerHTML = `
-        <div class="ingredient-details">
-            <input type="text" class="edit-input" placeholder="Ingredient Name" />
-        </div>
-        <div class="ingredient-calories">
-            <input type="number" class="edit-input" placeholder="Calories" />
-        </div>
-        <div class="ingredient-actions">
-            <button class="save-btn">✔️</button>
-            <button class="cancel-btn">❌</button>
-        </div>
-    `;
+	       <div class="ingredient-details">
+	           <input type="text" class="edit-input" placeholder="Ingredient Name" />
+	       </div>
+	       <div class="ingredient-calories">
+	           <input type="number" class="edit-input" placeholder="Calories" />
+	       </div>
+	       <div class="ingredient-actions">
+	           <button class="save-btn">✔️</button>
+	           <button class="cancel-btn">❌</button>
+	       </div>
+	   `;
 		ingredientList.appendChild(newItem);
 
 		const nameInput = newItem.querySelector("input[type='text']");
@@ -151,15 +155,15 @@
 			const newIngredient = document.createElement("div");
 			newIngredient.classList.add("ingredient-item");
 			newIngredient.innerHTML = `
-            <div class="ingredient-details">
-                <span class="ingredient-name">${name}</span>
-            </div>
-            <div class="ingredient-calories">${calories} Calories</div>
-            <div class="ingredient-actions">
-                <button class="edit-btn">✏️</button>
-                <button class="remove-btn">X</button>
-            </div>
-        `;
+	           <div class="ingredient-details">
+	               <span class="ingredient-name">${name}</span>
+	           </div>
+	           <div class="ingredient-calories">${calories} Calories</div>
+	           <div class="ingredient-actions">
+	               <button class="edit-btn">✏️</button>
+	               <button class="remove-btn">X</button>
+	           </div>
+	       `;
 
 			ingredientList.appendChild(newIngredient);
 
@@ -206,9 +210,9 @@
 
 		const actionsDiv = item.querySelector(".ingredient-actions");
 		actionsDiv.innerHTML = `
-        <button class="save-btn">✔️</button>
-        <button class="cancel-btn">❌</button>
-    `;
+	       <button class="save-btn">✔️</button>
+	       <button class="cancel-btn">❌</button>
+	   `;
 
 		const saveBtn = actionsDiv.querySelector(".save-btn");
 		const cancelBtn = actionsDiv.querySelector(".cancel-btn");
@@ -237,9 +241,9 @@
 			displayTotalCals.textContent = `Total: ${totalCals} Calories`;
 
 			actionsDiv.innerHTML = `
-            <button class="edit-btn">✏️</button>
-            <button class="remove-btn">X</button>
-        `;
+	           <button class="edit-btn">✏️</button>
+	           <button class="remove-btn">X</button>
+	       `;
 
 			const editBtn = actionsDiv.querySelector(".edit-btn");
 			const removeBtn = actionsDiv.querySelector(".remove-btn");
@@ -268,9 +272,9 @@
 			calInput.replaceWith(originalCalDiv);
 
 			actionsDiv.innerHTML = `
-            <button class="edit-btn">✏️</button>
-            <button class="remove-btn">X</button>
-        `;
+	           <button class="edit-btn">✏️</button>
+	           <button class="remove-btn">X</button>
+	       `;
 
 			const editBtn = actionsDiv.querySelector(".edit-btn");
 			const removeBtn = actionsDiv.querySelector(".remove-btn");
@@ -303,21 +307,26 @@
 		const userContext = chatArea.value;
 		chatArea.value = "";
 
-		const response = await fetch("/upload", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				image: base64,
-				type: imgFileType,
-				userContext: userContext,
-				prevFoodData: prevFoodOjbs,
-				mock: false,
-			}),
-		});
+
+			loadingOverlay.style.display = "flex"; // Show the overlay
+
+			const response = await fetch("/upload", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					image: base64,
+					type: imgFileType,
+					userContext: userContext,
+					prevFoodData: prevFoodOjbs,
+					mock: false,
+				}),
+			});
+			loadingOverlay.style.display = "none";
 
 		if (!response.ok) {
+			loadingOverlay.style.display = "none";
 			throw new Error("Failed to process the image.");
 		}
 
@@ -337,15 +346,15 @@
 			item.classList.add("ingredient-item");
 
 			item.innerHTML = `
-            <div class="ingredient-details">
-                <span class="ingredient-name">${foodObj.element}</span>
-            </div>
-            <div class="ingredient-calories">${foodObj.estimated_cals} Calories</div>
-            <div class="ingredient-actions">
-                <button class="edit-btn">✏️</button>
-                <button class="remove-btn">X</button>
-            </div>
-        `;
+	           <div class="ingredient-details">
+	               <span class="ingredient-name">${foodObj.element}</span>
+	           </div>
+	           <div class="ingredient-calories">${foodObj.estimated_cals} Calories</div>
+	           <div class="ingredient-actions">
+	               <button class="edit-btn">✏️</button>
+	               <button class="remove-btn">X</button>
+	           </div>
+	       `;
 
 			totalCals += foodObj.estimated_cals;
 			ingredientList.appendChild(item);
