@@ -275,13 +275,17 @@ body {
 }
 
 .edit-btn {
-    color: #9a79f7;
-    transition: transform 0.3s ease, color 0.3s ease;
+    color: #6a5acd; /* Lavender blue */
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.3s ease, transform 0.3s ease;
 }
 
 .edit-btn:hover {
-    color: #7148c1;
-    transform: scale(1.05);
+    color: #9a79f7; /* Brighter lavender blue */
+    transform: scale(1.1);
 }
 
 .total-calories {
@@ -292,4 +296,60 @@ body {
     color: #d4f1d4;
     color: #9a79f7; /* Lavender blue for total calories text */
     border-top: 2px solid #6a5acd; /* Lavender blue for the border */
+}
+
+/* Inline editing input fields */
+.edit-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    background-color: #2a2a2a; /* Match the theme's background */
+    border: 2px solid #6a5acd; /* Lavender blue border for input fields */
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
+}
+
+/* Focus effect for edit inputs */
+.edit-input:focus {
+    border-color: #9a79f7; /* Brighter lavender blue for focus */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Save button */
+.save-btn {
+    background-color: #4caf50; /* Green for success */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #3c9141; /* Slightly darker green on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* Cancel button */
+.cancel-btn {
+    background-color: #f54242; /* Red for cancel */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #c30000; /* Darker red on hover */
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }

@@ -6,11 +6,13 @@ export const mockElement = [
 	{
 		element: "pancakes",
 		bbox: [0.1, 0.25, 0.5, 0.75],
+        estimated_cals: 150,
 		confidence: 0.98,
 	},
 	{
 		element: "butter pat",
 		bbox: [0.2, 0.35, 0.25, 0.4],
+        estimated_cals: 60,
 		confidence: 0.95,
 	}
 ]

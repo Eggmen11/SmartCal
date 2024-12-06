@@ -20,13 +20,15 @@ app.get("/", (req, res) => res.render("home"));
 app.get("/calc", (req, res) => res.render("calculator"));
 
 app.post("/upload", (req, res) => {
-	if (req.mock) {
-		mockResponse = {
+	if (req.body.mock) {
+		console.log("Using Mock Data");
+		const mockResponse = {
 			type: req.body.type,
 			image: req.body.image,
 			userContext: req.body.userContext,
 			foodData: mockElement
 		}
+		return res.json(mockResponse);
 	}
 	// Returns data - proccessed base64, img type, detected food with estimated cals
 	processImg(req.body).then((data) => res.json(data));

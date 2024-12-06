@@ -1,3 +1,5 @@
+Add the ability to mock data for dev purposes.
+
 Make the frontend buttons work 
     - Add ingredient button
     - Remove ingredient button
@@ -9,3 +11,10 @@ Make it more deterministic and accurate by prompting it better.
 Make the borders more accurate.
 
 Test it with labeled data.
+
+Add authentication and a credit based system.
+    - learn and use firebase (optional)
+    
+Add a history of previous images
+
+Add some kind of 
