@@ -52,6 +52,7 @@
 	const chatArea = document.getElementById("chat-area");
 	const ingredientList = document.querySelector(".ingredients-list");
 	const displayTotalCals = document.querySelector(".total-calories");
+	const addIngredientBtn = document.querySelector(".add-ingredient-btn");
 	const validFileTypes = [
 		"image/jpeg",
 		"image/png",
@@ -59,11 +60,12 @@
 		"image/gif",
 		"image/webp",
 	];
+
 	let prevFoodOjbs = undefined;
 	let imgData = undefined;
 	let originalImage = undefined;
 	let imgFileType = undefined;
-
+	let totalCals = 0;
 	let isImageProcessed = false;
 
 	function reset() {
@@ -72,6 +74,7 @@
 		originalImage = undefined;
 		imgFileType = undefined;
 		isImageProcessed = false;
+		totalCals = 0;
 		calculateButton.innerHTML = "Calculate";
 		displayTotalCals.textContent = "";
 		ingredientList.innerHTML = "";
@@ -79,7 +82,7 @@
 		previewSection.style.display = "none";
 		uploadSection.style.display = "flex";
 	}
-	// Reset the file input to allow re-uploading after removal
+
 	function resetFileInput() {
 		fileInput.value = ""; // Clear the file input value
 	}
@@ -111,9 +114,182 @@
 		}
 	});
 
+	// Add Ingredient
+	addIngredientBtn.addEventListener("click", () => {
+		const newItem = document.createElement("div");
+		newItem.classList.add("ingredient-item");
+		newItem.innerHTML = `
+        <div class="ingredient-details">
+            <input type="text" class="edit-input" placeholder="Ingredient Name" />
+        </div>
+        <div class="ingredient-calories">
+            <input type="number" class="edit-input" placeholder="Calories" />
+        </div>
+        <div class="ingredient-actions">
+            <button class="save-btn">✔️</button>
+            <button class="cancel-btn">❌</button>
+        </div>
+    `;
+		ingredientList.appendChild(newItem);
+
+		const nameInput = newItem.querySelector("input[type='text']");
+		const calInput = newItem.querySelector("input[type='number']");
+		nameInput.focus();
+
+		const saveBtn = newItem.querySelector(".save-btn");
+		const cancelBtn = newItem.querySelector(".cancel-btn");
+
+		saveBtn.addEventListener("click", () => {
+			const name = nameInput.value.trim();
+			const calories = parseInt(calInput.value);
+
+			if (!name || isNaN(calories) || calories <= 0) {
+				alert("Please enter a valid ingredient name and calories.");
+				return;
+			}
+
+			const newIngredient = document.createElement("div");
+			newIngredient.classList.add("ingredient-item");
+			newIngredient.innerHTML = `
+            <div class="ingredient-details">
+                <span class="ingredient-name">${name}</span>
+            </div>
+            <div class="ingredient-calories">${calories} Calories</div>
+            <div class="ingredient-actions">
+                <button class="edit-btn">✏️</button>
+                <button class="remove-btn">X</button>
+            </div>
+        `;
+
+			ingredientList.appendChild(newIngredient);
+
+			totalCals += calories;
+			displayTotalCals.textContent = `Total: ${totalCals} Calories`;
+
+			const editBtn = newIngredient.querySelector(".edit-btn");
+			const removeBtn = newIngredient.querySelector(".remove-btn");
+
+			editBtn.addEventListener("click", () => {
+				editIngredient(newIngredient, name, calories);
+			});
+
+			removeBtn.addEventListener("click", () => {
+				totalCals -= calories;
+				displayTotalCals.textContent = `Total: ${totalCals} Calories`;
+				newIngredient.remove();
+			});
+
+			newItem.remove();
+		});
+
+		cancelBtn.addEventListener("click", () => {
+			newItem.remove();
+		});
+	});
+
+	function editIngredient(item, currentName, currentCals) {
+		const nameSpan = item.querySelector(".ingredient-name");
+		const calorieDiv = item.querySelector(".ingredient-calories");
+
+		const nameInput = document.createElement("input");
+		nameInput.type = "text";
+		nameInput.value = currentName;
+		nameInput.classList.add("edit-input");
+
+		const calInput = document.createElement("input");
+		calInput.type = "number";
+		calInput.value = currentCals;
+		calInput.classList.add("edit-input");
+
+		nameSpan.replaceWith(nameInput);
+		calorieDiv.replaceWith(calInput);
+
+		const actionsDiv = item.querySelector(".ingredient-actions");
+		actionsDiv.innerHTML = `
+        <button class="save-btn">✔️</button>
+        <button class="cancel-btn">❌</button>
+    `;
+
+		const saveBtn = actionsDiv.querySelector(".save-btn");
+		const cancelBtn = actionsDiv.querySelector(".cancel-btn");
+
+		saveBtn.addEventListener("click", () => {
+			const newName = nameInput.value.trim();
+			const newCals = parseInt(calInput.value);
+
+			if (!newName || isNaN(newCals) || newCals <= 0) {
+				alert("Please enter valid values.");
+				return;
+			}
+
+			const updatedNameSpan = document.createElement("span");
+			updatedNameSpan.classList.add("ingredient-name");
+			updatedNameSpan.textContent = newName;
+
+			const updatedCalDiv = document.createElement("div");
+			updatedCalDiv.classList.add("ingredient-calories");
+			updatedCalDiv.textContent = `${newCals} Calories`;
+
+			nameInput.replaceWith(updatedNameSpan);
+			calInput.replaceWith(updatedCalDiv);
+
+			totalCals = totalCals - currentCals + newCals;
+			displayTotalCals.textContent = `Total: ${totalCals} Calories`;
+
+			actionsDiv.innerHTML = `
+            <button class="edit-btn">✏️</button>
+            <button class="remove-btn">X</button>
+        `;
+
+			const editBtn = actionsDiv.querySelector(".edit-btn");
+			const removeBtn = actionsDiv.querySelector(".remove-btn");
+
+			editBtn.addEventListener("click", () => {
+				editIngredient(item, newName, newCals);
+			});
+
+			removeBtn.addEventListener("click", () => {
+				totalCals -= newCals;
+				displayTotalCals.textContent = `Total: ${totalCals} Calories`;
+				item.remove();
+			});
+		});
+
+		cancelBtn.addEventListener("click", () => {
+			const originalNameSpan = document.createElement("span");
+			originalNameSpan.classList.add("ingredient-name");
+			originalNameSpan.textContent = currentName;
+
+			const originalCalDiv = document.createElement("div");
+			originalCalDiv.classList.add("ingredient-calories");
+			originalCalDiv.textContent = `${currentCals} Calories`;
+
+			nameInput.replaceWith(originalNameSpan);
+			calInput.replaceWith(originalCalDiv);
+
+			actionsDiv.innerHTML = `
+            <button class="edit-btn">✏️</button>
+            <button class="remove-btn">X</button>
+        `;
+
+			const editBtn = actionsDiv.querySelector(".edit-btn");
+			const removeBtn = actionsDiv.querySelector(".remove-btn");
+
+			editBtn.addEventListener("click", () => {
+				editIngredient(item, currentName, currentCals);
+			});
+
+			removeBtn.addEventListener("click", () => {
+				totalCals -= currentCals;
+				displayTotalCals.textContent = `Total: ${totalCals} Calories`;
+				item.remove();
+			});
+		});
+	}
+
 	removeButton.addEventListener("click", () => {
 		reset();
-		resetFileInput(); // Reset the file input
+		resetFileInput();
 	});
 
 	calculateButton.addEventListener("click", async () => {
@@ -122,14 +298,11 @@
 			return;
 		}
 
-		// Splits the reslut of reading the data which return the type and base64 in one string seperated by ,
 		const dataList = originalImage.split(",");
 		const base64 = dataList[1];
 		const userContext = chatArea.value;
 		chatArea.value = "";
 
-		console.log("User context: " + userContext);
-		console.log("Sending image data to server...");
 		const response = await fetch("/upload", {
 			method: "POST",
 			headers: {
@@ -140,149 +313,58 @@
 				type: imgFileType,
 				userContext: userContext,
 				prevFoodData: prevFoodOjbs,
-				mock: true,
+				mock: false,
 			}),
 		});
 
 		if (!response.ok) {
-			throw new Error(responseData.message);
+			throw new Error("Failed to process the image.");
 		}
+
+		const responseData = await response.json();
 		ingredientList.innerHTML = "";
 
-		console.log("Image proccessed successfully");
-		isImageProcessed = true;
-		const responseData = await response.json(response);
-		console.log(responseData);
-
-		const processedBase64 = responseData.image; // Use the processed image from the server
-		const processedType = responseData.type || imgFileType; // Default to original type if not provided
+		const processedBase64 = responseData.image;
+		const processedType = responseData.type || imgFileType;
 		const processedDataUrl = `data:${processedType};base64,${processedBase64}`;
-		previewImage.src = processedDataUrl; // Update the preview with the processed image
+		previewImage.src = processedDataUrl;
 
 		prevFoodOjbs = responseData.foodData;
-		let totalCals = 0;
-		for (const foodObj of responseData.foodData) {
+		totalCals = 0;
+
+		responseData.foodData.forEach((foodObj) => {
 			const item = document.createElement("div");
-			totalCals += foodObj.estimated_cals;
-
 			item.classList.add("ingredient-item");
+
 			item.innerHTML = `
-		<div class="ingredient-details">
-			<span class="ingredient-name">${foodObj.element}</span>
-		</div>
-		<div class="ingredient-calories">${foodObj.estimated_cals} Calories</div>
-		<div class="ingredient-actions">
-			<button class="edit-btn">✏️</button>
-			<button class="remove-btn">X</button>
-		</div>
-	`;
+            <div class="ingredient-details">
+                <span class="ingredient-name">${foodObj.element}</span>
+            </div>
+            <div class="ingredient-calories">${foodObj.estimated_cals} Calories</div>
+            <div class="ingredient-actions">
+                <button class="edit-btn">✏️</button>
+                <button class="remove-btn">X</button>
+            </div>
+        `;
 
-			document.querySelector(".ingredients-list").appendChild(item);
+			totalCals += foodObj.estimated_cals;
+			ingredientList.appendChild(item);
 
-			// Add event listener for the remove button
+			const editBtn = item.querySelector(".edit-btn");
 			const removeBtn = item.querySelector(".remove-btn");
-			removeBtn.addEventListener("click", () => {
-				// Subtract the calories of the removed item
-				totalCals -= foodObj.estimated_cals;
-				displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
 
-				// Remove the item from the list
+			editBtn.addEventListener("click", () => {
+				editIngredient(item, foodObj.element, foodObj.estimated_cals);
+			});
+
+			removeBtn.addEventListener("click", () => {
+				totalCals -= foodObj.estimated_cals;
+				displayTotalCals.textContent = `Total: ${totalCals} Calories`;
 				item.remove();
 			});
+		});
 
-			// Add event listener for the edit button
-			const editBtn = item.querySelector(".edit-btn");
-			editBtn.addEventListener("click", () => {
-				const nameSpan = item.querySelector(".ingredient-name");
-				const calorieDiv = item.querySelector(".ingredient-calories");
-
-				// Store current values
-				const currentName = nameSpan.textContent;
-				const currentCals = parseInt(foodObj.estimated_cals);
-
-				// Create input fields for editing
-				const nameInput = document.createElement("input");
-				nameInput.type = "text";
-				nameInput.value = currentName;
-				nameInput.classList.add("edit-input");
-
-				const calInput = document.createElement("input");
-				calInput.type = "number";
-				calInput.value = currentCals;
-				calInput.classList.add("edit-input");
-
-				// Replace current content with input fields
-				nameSpan.replaceWith(nameInput);
-				calorieDiv.replaceWith(calInput);
-
-				// Add Save and Cancel buttons
-				const actionsDiv = item.querySelector(".ingredient-actions");
-				const saveBtn = document.createElement("button");
-				saveBtn.textContent = "✔️";
-				saveBtn.classList.add("save-btn");
-				const cancelBtn = document.createElement("button");
-				cancelBtn.textContent = "❌";
-				cancelBtn.classList.add("cancel-btn");
-
-				actionsDiv.appendChild(saveBtn);
-				actionsDiv.appendChild(cancelBtn);
-
-				// Focus on the name input field
-				nameInput.focus();
-
-				// Save changes
-				saveBtn.addEventListener("click", () => {
-					const newName = nameInput.value.trim() || currentName;
-					const newCals = parseInt(calInput.value) || currentCals;
-
-					// Replace input fields with updated values
-					const updatedNameSpan = document.createElement("span");
-					updatedNameSpan.classList.add("ingredient-name");
-					updatedNameSpan.textContent = newName;
-
-					const updatedCalDiv = document.createElement("div");
-					updatedCalDiv.classList.add("ingredient-calories");
-					updatedCalDiv.textContent = `${newCals} Calories`;
-
-					nameInput.replaceWith(updatedNameSpan);
-					calInput.replaceWith(updatedCalDiv);
-
-					// Remove Save and Cancel buttons
-					saveBtn.remove();
-					cancelBtn.remove();
-
-					// Adjust total calories
-					totalCals = totalCals - currentCals + newCals;
-					displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
-
-					// Update the object
-					foodObj.element = newName;
-					foodObj.estimated_cals = newCals;
-				});
-
-				// Cancel changes
-				cancelBtn.addEventListener("click", () => {
-					// Replace input fields with original values
-					const originalNameSpan = document.createElement("span");
-					originalNameSpan.classList.add("ingredient-name");
-					originalNameSpan.textContent = currentName;
-
-					const originalCalDiv = document.createElement("div");
-					originalCalDiv.classList.add("ingredient-calories");
-					originalCalDiv.textContent = `${currentCals} Calories`;
-
-					nameInput.replaceWith(originalNameSpan);
-					calInput.replaceWith(originalCalDiv);
-
-					// Remove Save and Cancel buttons
-					saveBtn.remove();
-					cancelBtn.remove();
-				});
-			});
-
-			displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
-		}
-
+		displayTotalCals.textContent = `Total: ${totalCals} Calories`;
 		calculateButton.textContent = "Recalculate";
 	});
 </script>
