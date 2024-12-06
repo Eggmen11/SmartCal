@@ -24,7 +24,11 @@
 			<button class="calculate-btn">Calculate</button>
 		</div>
 		<div class="chat">
-			<textarea id="chat-area" class="chat-area" placeholder="Enter additional information (Optional)"></textarea>
+			<textarea
+				id="chat-area"
+				class="chat-area"
+				placeholder="Enter additional information (Optional)"
+			></textarea>
 		</div>
 	</div>
 	<div class="right-container">
@@ -33,8 +37,7 @@
 				<h3>Ingredients</h3>
 				<button class="add-ingredient-btn">+ Add</button>
 			</div>
-			<div class="ingredients-list">
-			</div>
+			<div class="ingredients-list"></div>
 			<div class="total-calories"></div>
 		</div>
 	</div>
@@ -62,7 +65,6 @@
 	let imgFileType = undefined;
 
 	let isImageProcessed = false;
-
 
 	function reset() {
 		prevFoodOjbs = undefined;
@@ -138,6 +140,7 @@
 				type: imgFileType,
 				userContext: userContext,
 				prevFoodData: prevFoodOjbs,
+				mock: true
 			}),
 		});
 
@@ -174,6 +177,47 @@
 				</div>
 			`;
 			document.querySelector(".ingredients-list").appendChild(item);
+
+			// Add event listener for the remove button
+			const removeBtn = item.querySelector(".remove-btn");
+			removeBtn.addEventListener("click", () => {
+				// Subtract the calories of the removed item
+				totalCals -= foodObj.estimated_cals;
+				displayTotalCals.innerHTML = `Total: ${totalCals} calories`;
+
+				// Remove the item from the list
+				item.remove();
+			});
+
+			// Add event listener for the edit button
+			const editBtn = item.querySelector(".edit-btn");
+			editBtn.addEventListener("click", () => {
+				const nameSpan = item.querySelector(".ingredient-name");
+				const calorieDiv = item.querySelector(".ingredient-calories");
+
+				// Get current values
+				const currentName = nameSpan.textContent;
+				const currentCals = parseInt(foodObj.estimated_cals);
+
+				// Prompt user to edit values
+				const newName =
+					prompt("Edit Ingredient Name:", currentName) || currentName;
+				const newCals =
+					parseInt(prompt("Edit Calories:", currentCals)) ||
+					currentCals;
+
+				// Update the DOM and total calories
+				nameSpan.textContent = newName;
+				calorieDiv.textContent = `${newCals} Calories`;
+
+				// Adjust total calories
+				totalCals = totalCals - currentCals + newCals;
+				displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
+
+				// Update the object to reflect changes (if needed elsewhere)
+				foodObj.element = newName;
+				foodObj.estimated_cals = newCals;
+			});
 
 			displayTotalCals.innerHTML = `Total: ${totalCals} Calories`;
 		}

@@ -1,19 +1,26 @@
 import { detectFood } from "../services/llmService.mjs";
 import { drawBorders } from "../services/imgService.mjs";
 
-const lastElements = [];
+
+export const mockElement = [
+	{
+		element: "pancakes",
+		bbox: [0.1, 0.25, 0.5, 0.75],
+		confidence: 0.98,
+	},
+	{
+		element: "butter pat",
+		bbox: [0.2, 0.35, 0.25, 0.4],
+		confidence: 0.95,
+	}
+]
+
 
 export async function processImg(requestData) {
     // Image data should contain base64 img string and the image type
-    console.log("Request Data:")
-    console.log(requestData);
-
-
 	const base64Image = requestData.image;
 	const type = requestData.type;
     const userContext = requestData.userContext;
-
-    console.log("User context: " + userContext);
 
     // Detects objects using Claude - returns JSON object
     console.log("Detecting Objects ...")
@@ -29,6 +36,15 @@ export async function processImg(requestData) {
     const proccessedBase64 = await drawBorders(base64Image, foodData);
     console.log("Borders have been drawn")
 
+    const response = {
+        type: type,
+        image: proccessedBase64,
+        userContext: userContext,
+        foodData: foodData
+    }
+
+
+    console.log( response );
 
     return {
         type: type,

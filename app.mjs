@@ -2,7 +2,7 @@ import express from "express";
 import ejs from "ejs";
 import path from "path";
 import { detectFood } from "./services/llmService.mjs";
-import { processImg } from "./middleware/processImgMiddleware.mjs";
+import { processImg, mockElement } from "./middleware/processImgMiddleware.mjs";
 
 const app = express();
 
@@ -20,8 +20,14 @@ app.get("/", (req, res) => res.render("home"));
 app.get("/calc", (req, res) => res.render("calculator"));
 
 app.post("/upload", (req, res) => {
-	//console.log(req.body);
-
+	if (req.mock) {
+		mockResponse = {
+			type: req.body.type,
+			image: req.body.image,
+			userContext: req.body.userContext,
+			foodData: mockElement
+		}
+	}
 	// Returns data - proccessed base64, img type, detected food with estimated cals
 	processImg(req.body).then((data) => res.json(data));
 });
