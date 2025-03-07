@@ -48,6 +48,7 @@ Then open **`http://localhost:3000`** in your browser. 🚀
 
 ## 🎯 What Inspired This?
 
-SmartCal was inspired by **[Cal AI](https://www.calai.app/)**, but this is an independent project built to explore AI-based food tracking in a **customizable way**. Additionally, this project was influenced by [Anthropic's Object Detection repository](https://github.com/anthropic/object-detection), which provided inspiration for the AI-driven approach to food recognition.
+SmartCal was inspired by **[Cal AI](https://www.calai.app/)**, but this is an independent project built to explore AI-based food tracking in a **customizable way**. Additionally, this project was influenced by [Doriandarko's Claude-Vision-Object-Detection](https://github.com/Doriandarko/Claude-Vision-Object-Detection), which provided inspiration for the AI-driven approach to food recognition.
+
 
 
