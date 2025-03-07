@@ -145,6 +145,14 @@
 
 		saveBtn.addEventListener("click", () => {
 			const name = nameInput.value.trim();
+			const nameList = name.split(" ");
+			consol.log(nameList)
+			nameList.map((name) => {
+				name = name.charAt(0).toUpperCase() + name.slice(1);
+			})
+			const formatedName = nameList.join(" ");
+			console.log(formatedName)
+
 			const calories = parseInt(calInput.value);
 
 			if (!name || isNaN(calories) || calories <= 0) {
@@ -156,7 +164,7 @@
 			newIngredient.classList.add("ingredient-item");
 			newIngredient.innerHTML = `
 	           <div class="ingredient-details">
-	               <span class="ingredient-name">${name}</span>
+	               <span class="ingredient-name">${formatedName}</span>
 	           </div>
 	           <div class="ingredient-calories">${calories} Calories</div>
 	           <div class="ingredient-actions">
@@ -307,7 +315,6 @@
 		const userContext = chatArea.value;
 		chatArea.value = "";
 
-
 			loadingOverlay.style.display = "flex"; // Show the overlay
 
 			const response = await fetch("/upload", {
@@ -343,11 +350,16 @@
 
 		responseData.foodData.forEach((foodObj) => {
 			const item = document.createElement("div");
+			const nameList = foodObj.element.split(" ");
+			const formatedName = nameList
+				.map((name) => name.charAt(0).toUpperCase() + name.slice(1))
+				.join(" ");
+			console.log(formatedName)
 			item.classList.add("ingredient-item");
 
 			item.innerHTML = `
 	           <div class="ingredient-details">
-	               <span class="ingredient-name">${foodObj.element}</span>
+	               <span class="ingredient-name">${formatedName}</span>
 	           </div>
 	           <div class="ingredient-calories">${foodObj.estimated_cals} Calories</div>
 	           <div class="ingredient-actions">
