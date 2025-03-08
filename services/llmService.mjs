@@ -3,8 +3,10 @@ import dotenv from "dotenv";
 dotenv.config(); // Load environment variables
 
 const client = new Anthropic({
-	apiKey: "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", // defaults to process.env["ANTHROPIC_API_KEY"]
+	apiKey: process.env.ANTHROPIC_API_KEY, // Fetch from .env
 });
+
+console.log("Anthropic API Key Loaded:", process.env.ANTHROPIC_API_KEY ? "✅" : "❌ Missing API Key");
 
 const systemPrompt = `
         You are an expert computer vision system for food and calorie estimations. First describe the image in accurate details, then analyze the provided images and return ONLY a JSON object containing bounding boxes. Be super precise and try to detect consumalbe objects. Internally think estimate the weight or counte the number of items if applicable than precisely estimate callories.
